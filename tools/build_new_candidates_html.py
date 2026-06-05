@@ -401,7 +401,7 @@ table.compare-sum .num { font-variant-numeric: tabular-nums; font-family: var(--
 
 
 BRAND_MARK_SVG = """
-<img class="brand-mark" src="../../assets/images/prabhupada-lotus-book.svg" alt="Srila Prabhupada Audio Restoration" width="28" height="28"/>
+<img class="brand-mark" src="../../assets/images/prabhupada-icon.png" alt="Srila Prabhupada Audio Restoration" width="32" height="32"/>
 """
 
 
@@ -820,7 +820,7 @@ def main() -> int:
     <a href="#multi">skip to 3-sample A/B →</a>
   </div>
   <div class="hero-mark">
-    <img src="../../assets/images/prabhupada-lotus-book.svg" alt="" width="44" height="44"/>
+    <img src="../../assets/images/prabhupada-icon.png" alt="" width="56" height="56"/>
   </div>
 </section>
 
