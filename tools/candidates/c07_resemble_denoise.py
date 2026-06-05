@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""
+c07_resemble_denoise — Resemble AI's open-source speech denoiser, denoise-only.
+
+The model is a 0.5B-param latent diffusion pipeline trained for speech
+restoration. Two modes are exposed:
+  - denoise only (this candidate, ~RTF 0.4 on M1)
+  - full enhance (denoise + bandwidth extension + perceptual polish, ~RTF 1.7)
+
+Denoise-only is the practical option at 1000+ file scale: ~24 min per
+56-min file on M1, ~17 days of single-machine processing for 1000 files.
+Full enhance is too slow; we ship it as c08 for a quality ceiling.
+
+Pipeline: denoise → ffmpeg loudnorm → 24-bit/48kHz mono.
+"""
+from __future__ import annotations
+
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import lib_audio as L
+
+# resemble-enhance transitively imports librosa 0.10 which still
+# references np.complex, removed in NumPy 1.20+. Must patch before
+# any resemble import.
+L.patch_numpy_complex()
+
+
+def have_resemble() -> bool:
+    try:
+        import resemble_enhance  # noqa: F401
+        return True
+    except ImportError:
+        return False
+
+
+def main() -> int:
+    L.require_cmd("ffmpeg")
+    src = L._require_source()
+    out_dir = L.stage_dir("c07", "resemble_denoise")
+    pre = out_dir / "pre.wav"  # 48k mono after ffmpeg prep
+    den = out_dir / "denoised.wav"
+    out = out_dir / "output.wav"
+    print(f"[c07] {src.name} → {out.relative_to(L.REPO_ROOT)}")
+    if not have_resemble():
+        print("[c07] SKIPPED: `resemble-enhance` not installed. Run `uv pip install 'resemble-enhance @ git+https://github.com/resemble-ai/resemble-enhance'` to enable.")
+        L.write_report(_skipped(out_dir), out_dir / "report.json")
+        return 0
+
+    t_total = time.time()
+
+    # Step 1: decode to 48k mono WAV (resemble works on any sr, mono is safer).
+    r = subprocess.run([
+        "ffmpeg", "-y", "-hide_banner", "-nostats", "-loglevel", "error",
+        "-i", str(src), "-ac", "1", "-ar", "48000", "-c:a", "pcm_s24le", str(pre),
+    ], capture_output=True, text=True)
+    if r.returncode != 0:
+        print(f"[c07] decode failed: {r.stderr}", file=sys.stderr)
+        return 1
+
+    # Step 2: resemble denoise-only.
+    import torch
+    import torchaudio
+    from resemble_enhance.enhancer.inference import denoise
+    device = "mps" if torch.backends.mps.is_available() else "cpu"
+    wav, sr = torchaudio.load(str(pre))
+    wav = wav.mean(0)  # mono [T]
+    hwav, sr_out = denoise(dwav=wav, sr=sr, device=device, run_dir=None)
+    torchaudio.save(str(den), hwav[None].cpu(), sr_out)
+
+    # Step 3: loudnorm.
+    r = subprocess.run([
+        "ffmpeg", "-y", "-hide_banner", "-nostats", "-loglevel", "error",
+        "-i", str(den),
+        "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
+        "-ar", str(L.TARGET_SR), "-ac", "1", "-c:a", "pcm_s24le", str(out),
+    ], capture_output=True, text=True)
+    if r.returncode != 0:
+        print(f"[c07] loudnorm failed: {r.stderr}", file=sys.stderr)
+        return 1
+
+    runtime = time.time() - t_total
+    m = L.measure(out, runtime_s=runtime)
+    L.write_report(m, out_dir / "report.json")
+    print(f"[c07] done in {runtime:.1f}s, hiss={m.hiss_band_energy_db:.1f}dB speech={m.speech_band_energy_db:.1f}dB")
+    return 0
+
+
+def _skipped(out_dir: Path) -> L.AudioMetrics:
+    return L.AudioMetrics(
+        path=str(out_dir / "MISSING"),
+        duration_s=0.0, sample_rate=0, channels=0, bit_depth=0,
+        peak_dbfs=-200.0, rms_dbfs=-200.0,
+        lufs=None, true_peak_dbtp=None, dynamic_range_lu=None,
+        hiss_band_energy_db=-200.0, speech_band_energy_db=-200.0, low_band_energy_db=-200.0,
+        spectral_centroid_hz=0.0, zero_crossing_rate=0.0, runtime_s=0.0,
+        extras={"status": "skipped: resemble-enhance not installed"},
+    )
+
+
+if __name__ == "__main__":
+    sys.exit(main())

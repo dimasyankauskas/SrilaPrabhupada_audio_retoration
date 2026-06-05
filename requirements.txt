@@ -1,0 +1,11 @@
+# Core audio + ML
+soundfile>=0.12
+numpy>=1.26
+matplotlib>=3.8
+# ML candidates. Each is optional — the harness reports a candidate as
+# "skipped" if its deps aren't installed, so you can install them in stages.
+denoiser @ git+https://github.com/facebookresearch/denoiser
+
+
+
+

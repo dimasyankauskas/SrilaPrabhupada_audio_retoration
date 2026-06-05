@@ -1,0 +1,49 @@
+# Editor / OS
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Toolchain
+.cache/
+
+# ML model checkpoints (downloaded on first use; not in the repo).
+checkpoints/
+
+# Agent / IDE state (per-machine, not for version control)
+.claude/
+.opencode/
+.history/
+
+# Local shell history / scratch
+history.txt
+
+# Project artifacts
+stages/
+# Public comparison page is published to GitHub Pages; ship it.
+reports/multi/new_candidates.html
+# All other reports are local.
+reports/*
+!reports/multi/
+!reports/multi/new_candidates.html
+samples/source/*
+!samples/source/.gitkeep
+
+# Cached 10-min clips used by run_multi.py live outside the repo on
+# /tmp/ by default, but a developer can re-point via CLIP_DIR. Exclude
+# them just in case the env var is reconfigured.
+clips/
+
+# Development fixtures: synthetic test signals used to exercise the harness
+# end-to-end before the canonical Drive file is available. Committed on purpose
+# so anyone can `cp samples/fixtures/synthetic_70s_tape.wav samples/source/` to
+# smoke-test the pipeline without the real source.
+!samples/fixtures/
