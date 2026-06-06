@@ -188,8 +188,8 @@ a:hover { color: var(--accent-hover); }
   border-bottom: 1px solid var(--rule);
 }
 .topbar .row { display: flex; align-items: center; gap: 24px; padding: 14px 0; }
-.brand { display: flex; align-items: center; gap: 10px; }
-.brand-mark { width: 32px; height: 32px; border-radius: 7px; display: block; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark { width: 36px; height: 36px; border-radius: 8px; display: block; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
 .brand-line-1 { font-family: var(--serif); font-size: 15px; font-weight: 500; color: var(--ink); letter-spacing: 0.005em; }
 .brand-line-2 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); }
@@ -401,7 +401,7 @@ table.compare-sum .num { font-variant-numeric: tabular-nums; font-family: var(--
 
 
 BRAND_MARK_SVG = """
-<img class="brand-mark" src="../../assets/images/prabhupada-icon.png" alt="Srila Prabhupada Audio Restoration" width="32" height="32"/>
+<img class="brand-mark" src="../../assets/images/prabhupada-icon.png" alt="Srila Prabhupada Audio Restoration" width="36" height="36"/>
 """
 
 
@@ -818,9 +818,6 @@ def main() -> int:
   <div class="anti">
     Source · <b>{SAMPLE_LABEL}</b> · 10-minute clip · 48 kHz mono ·
     <a href="#multi">skip to 3-sample A/B →</a>
-  </div>
-  <div class="hero-mark">
-    <img src="../../assets/images/prabhupada-icon.png" alt="" width="56" height="56"/>
   </div>
 </section>
 
