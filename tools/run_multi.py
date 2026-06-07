@@ -228,8 +228,6 @@ def public_audio_path(sample: str, cand_stem: str) -> str | None:
     if "_" not in cand_stem:
         return None
     cand_id = cand_stem.split("_", 1)[0]
-    if cand_id not in FOCUS_CAND_IDS:
-        return None
     mp3 = REPO_ROOT / "assets" / "audio" / f"{sample}_{cand_id}_3min.mp3"
     if not mp3.exists():
         return None
@@ -295,14 +293,15 @@ def per_sample_audio_table_html(s: dict) -> str:
     # Replace the source placeholder with the actual clip path. The clip is
     # at /tmp/audio_restore_clips/<sample>_10min.wav (outside the repo) for
     # local viewing. On the public GitHub Pages URL, file:// is blocked, so
-    # fall back to the assets/audio/<sample>_3min.mp3 if it exists.
-    src_clip_path = s.get("clip", "")
-    if src_clip_path and Path(src_clip_path).exists():
-        items[0] = (items[0][0], f"file://{src_clip_path}", None)
+    # always prefer the public 3min MP3 if it exists; only fall back to
+    # file:// for fully-local viewing.
+    public_src = REPO_ROOT / "assets" / "audio" / f"{sample}_3min.mp3"
+    if public_src.exists():
+        items[0] = (items[0][0], f"../../assets/audio/{sample}_3min.mp3", None)
     else:
-        public_src = REPO_ROOT / "assets" / "audio" / f"{sample}_3min.mp3"
-        if public_src.exists():
-            items[0] = (items[0][0], f"../../assets/audio/{sample}_3min.mp3", None)
+        src_clip_path = s.get("clip", "")
+        if src_clip_path and Path(src_clip_path).exists():
+            items[0] = (items[0][0], f"file://{src_clip_path}", None)
 
     # Build header (compact column labels)
     header_cells = "".join(
@@ -339,12 +338,14 @@ def per_candidate_audio_table_html(samples: list[dict]) -> str:
     rows: list[str] = []
     # Source row first.
     def src_path(s: dict) -> str:
-        clip = s.get("clip", "")
-        if clip and Path(clip).exists():
-            path = f"file://{clip}"
+        # Prefer public 3min MP3 (works on GitHub Pages); fall back to
+        # file:// for fully-local viewing.
+        public = REPO_ROOT / "assets" / "audio" / f"{s['sample']}_3min.mp3"
+        if public.exists():
+            path = f"../../assets/audio/{s['sample']}_3min.mp3"
         else:
-            public = REPO_ROOT / "assets" / "audio" / f"{s['sample']}_3min.mp3"
-            path = f"../../assets/audio/{s['sample']}_3min.mp3" if public.exists() else ""
+            clip = s.get("clip", "")
+            path = f"file://{clip}" if clip and Path(clip).exists() else ""
         return audio_cell_html(s["src"], path, f"aud-src-{s['sample']}")
     rows.append(row("source", src_path, "src-row"))
 

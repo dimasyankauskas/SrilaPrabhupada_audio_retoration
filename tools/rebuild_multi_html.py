@@ -60,6 +60,13 @@ def main() -> int:
                 stage = r.get("stage", "")
                 if stage and "--" in stage:
                     r["candidate"] = stage.replace("--", "_", 1)
+        # Drop the inspect pseudo-candidate ("00" / "00--inspect") that some
+        # older runs accidentally included as a real candidate. It's not a
+        # restoration output; it's the source baseline.
+        d["results"] = [
+            r for r in d.get("results", [])
+            if r.get("candidate", "").split("_", 1)[0] not in ("00", "0")
+        ]
         d["src"] = src.name
         d["sample"] = sample
         d["clip"] = str(clip)

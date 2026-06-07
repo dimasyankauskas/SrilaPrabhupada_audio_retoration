@@ -1438,47 +1438,6 @@
         "stderr_tail": ""
       },
       {
-        "candidate": "00",
-        "stage": "00--inspect",
-        "score": {
-          "hiss_delta_db": 0.0,
-          "speech_delta_db": 0.0,
-          "lra_delta_lu": 0.0,
-          "lufs_drift_lu": 2.77,
-          "rtf": 0.032,
-          "hf_delta_db": 0.0,
-          "hf_reward_db": 0.0,
-          "hf_overshoot_db": 0.0,
-          "centroid_delta_hz": 0.0,
-          "score": -1.127,
-          "skipped": false
-        },
-        "report": {
-          "bit_depth": 24,
-          "channels": 1,
-          "duration_s": 600.0,
-          "dynamic_range_lu": 8.0,
-          "extras": {},
-          "hf_extension_db": -42.11740478348068,
-          "hiss_band_energy_db": 28.15352235434556,
-          "low_band_energy_db": 51.32702609203463,
-          "lufs": -21.77,
-          "measured_at": "2026-06-05T08:02:57.170120+00:00",
-          "path": "/tmp/audio_restore_clips/670322SB_SAN_FRANCISCO_10min.wav",
-          "peak_dbfs": -1.4615691808880342,
-          "rms_dbfs": -23.962693938028853,
-          "runtime_s": 19.127806186676025,
-          "sample_rate": 48000,
-          "spectral_centroid_hz": 2044.022951828042,
-          "speech_band_energy_db": 54.82635619219546,
-          "true_peak_dbtp": -1.42,
-          "zero_crossing_rate": 0.05163750179296881
-        },
-        "exit_code": 0,
-        "stdout_tail": "",
-        "stderr_tail": ""
-      },
-      {
         "candidate": "c03_facebook_denoiser",
         "stage": "c03--facebook_denoiser",
         "score": {
