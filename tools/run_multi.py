@@ -212,6 +212,31 @@ def stage_leaf(cand_stem: str) -> str:
     return cand_stem
 
 
+# Focus candidates that have per-sample 3-min MP3s in assets/audio/, so
+# their comparison.html audio cells work on the public GitHub Pages URL.
+# Other candidates fall back to the local stages/<sample>/<cand>/output.wav
+# path (which works when viewing the HTML locally but 404s on Pages
+# because stages/ is gitignored).
+FOCUS_CAND_IDS = ("c12", "c13", "c14", "c15", "c16", "c17")
+
+
+def public_audio_path(sample: str, cand_stem: str) -> str | None:
+    """Return the relative path (from reports/multi/comparison.html) of a
+    3-min MP3 for `cand_stem` on `sample`, if it has been pre-encoded into
+    assets/audio/. Returns None if not available (use stages/ fallback).
+    """
+    if "_" not in cand_stem:
+        return None
+    cand_id = cand_stem.split("_", 1)[0]
+    if cand_id not in FOCUS_CAND_IDS:
+        return None
+    mp3 = REPO_ROOT / "assets" / "audio" / f"{sample}_{cand_id}_3min.mp3"
+    if not mp3.exists():
+        return None
+    # assets/audio/<sample>_<cand>_3min.mp3 relative to reports/multi/comparison.html
+    return f"../../assets/audio/{sample}_{cand_id}_3min.mp3"
+
+
 def audio_cell_html(label: str, rel_path: str, tag: str) -> str:
     """One cell of an audio-comparison table.
 
@@ -256,7 +281,10 @@ def per_sample_audio_table_html(s: dict) -> str:
     for r in sorted_results:
         cand = r["candidate"]
         stage_dir = stage_leaf(cand)  # e.g. c03--facebook_denoiser
-        rel = f"../../stages/{sample}/{stage_dir}/output.wav"
+        # Prefer the public-friendly MP3 path when available; fall back to
+        # the local stages/ path for non-focus candidates.
+        public = public_audio_path(sample, cand)
+        rel = public if public else f"../../stages/{sample}/{stage_dir}/output.wav"
         sc = r["score"]
         items.append((
             f"{cand} (score {sc['score']:+.1f})",
@@ -265,11 +293,16 @@ def per_sample_audio_table_html(s: dict) -> str:
         ))
 
     # Replace the source placeholder with the actual clip path. The clip is
-    # at /tmp/audio_restore_clips/<sample>_10min.wav (outside the repo).
-    # Use a file:// absolute path so the browser can find it.
+    # at /tmp/audio_restore_clips/<sample>_10min.wav (outside the repo) for
+    # local viewing. On the public GitHub Pages URL, file:// is blocked, so
+    # fall back to the assets/audio/<sample>_3min.mp3 if it exists.
     src_clip_path = s.get("clip", "")
-    if src_clip_path:
+    if src_clip_path and Path(src_clip_path).exists():
         items[0] = (items[0][0], f"file://{src_clip_path}", None)
+    else:
+        public_src = REPO_ROOT / "assets" / "audio" / f"{sample}_3min.mp3"
+        if public_src.exists():
+            items[0] = (items[0][0], f"../../assets/audio/{sample}_3min.mp3", None)
 
     # Build header (compact column labels)
     header_cells = "".join(
@@ -306,7 +339,12 @@ def per_candidate_audio_table_html(samples: list[dict]) -> str:
     rows: list[str] = []
     # Source row first.
     def src_path(s: dict) -> str:
-        path = f"file://{s.get('clip', '')}"
+        clip = s.get("clip", "")
+        if clip and Path(clip).exists():
+            path = f"file://{clip}"
+        else:
+            public = REPO_ROOT / "assets" / "audio" / f"{s['sample']}_3min.mp3"
+            path = f"../../assets/audio/{s['sample']}_3min.mp3" if public.exists() else ""
         return audio_cell_html(s["src"], path, f"aud-src-{s['sample']}")
     rows.append(row("source", src_path, "src-row"))
 
@@ -333,7 +371,8 @@ def per_candidate_audio_table_html(samples: list[dict]) -> str:
             r = next((r for r in s["results"] if r["candidate"] == c), None)
             if not r or r["score"].get("skipped"):
                 return "<td class='audio-cell muted'>—</td>"
-            path = f"../../stages/{s['sample']}/{stage_leaf(c)}/output.wav"
+            public = public_audio_path(s["sample"], c)
+            path = public if public else f"../../stages/{s['sample']}/{stage_leaf(c)}/output.wav"
             label = f"{c} on {s['sample']} (score {r['score']['score']:+.1f})"
             return audio_cell_html(label, path, f"aud-x-{c}-{s['sample']}")
 
