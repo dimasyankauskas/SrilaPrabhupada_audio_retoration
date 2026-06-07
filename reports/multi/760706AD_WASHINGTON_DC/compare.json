@@ -1,0 +1,591 @@
+{
+  "baseline": {
+    "bit_depth": 24,
+    "channels": 1,
+    "duration_s": 600.0,
+    "dynamic_range_lu": 9.2,
+    "extras": {},
+    "hiss_band_energy_db": 33.341633252563966,
+    "low_band_energy_db": 54.845720420308545,
+    "lufs": -30.07,
+    "measured_at": "2026-06-04T21:30:20.641365+00:00",
+    "path": "/tmp/audio_restore_clips/760706AD_WASHINGTON_DC_10min.wav",
+    "peak_dbfs": 0.0,
+    "rms_dbfs": -29.790138267171912,
+    "runtime_s": 13.155755996704102,
+    "sample_rate": 48000,
+    "spectral_centroid_hz": 3758.0360989548603,
+    "speech_band_energy_db": 45.832674233753,
+    "true_peak_dbtp": 0.01,
+    "zero_crossing_rate": 0.10890215655910265
+  },
+  "results": [
+    {
+      "candidate": "c03_facebook_denoiser",
+      "exit_code": 0,
+      "stdout_tail": "[c03] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c03--facebook_denoiser/output.wav\n[c03] loading audio\u2026\n[c03] using device: cpu (Demucs not MPS-compatible)\n[c03] loading model\u2026\n[c03]   model loaded, 33.5M params\n[c03] running inference on 600s of audio\u2026\n[c03]   inference done in 115.2s, upsampling to 48k\u2026\n[c03]   writing output.wav ((28800000, 1))\u2026\n[c03]   measuring metrics\u2026\n[c03] done in 121.7s, hiss=4.0dB speech=42.9dB\n",
+      "stderr_tail": "",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 11.1,
+        "extras": {},
+        "hiss_band_energy_db": 3.96482094107173,
+        "low_band_energy_db": 41.32833520644244,
+        "lufs": -35.15,
+        "measured_at": "2026-06-04T21:34:11.112577+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c03--facebook_denoiser/output.wav",
+        "peak_dbfs": -0.007199281924389662,
+        "rms_dbfs": -36.07585020956181,
+        "runtime_s": 121.68931770324707,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1076.55203376279,
+        "speech_band_energy_db": 42.922323376792136,
+        "true_peak_dbtp": -0.01,
+        "zero_crossing_rate": 0.0391490638593425
+      },
+      "score": {
+        "hiss_delta_db": 29.38,
+        "speech_delta_db": 2.91,
+        "lra_delta_lu": 1.9,
+        "lufs_drift_lu": 16.15,
+        "rtf": 0.203,
+        "score": 50.998,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c01_classical_ffmpeg",
+      "exit_code": 0,
+      "stdout_tail": "[c01] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c01--classical_ffmpeg/output.wav\n[c01] done in 48.7s, hiss=12.3dB speech=60.3dB\n",
+      "stderr_tail": "",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 8.5,
+        "extras": {},
+        "hiss_band_energy_db": 12.281193820033527,
+        "low_band_energy_db": 61.92675916757033,
+        "lufs": -17.48,
+        "measured_at": "2026-06-04T21:31:25.982808+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c01--classical_ffmpeg/output.wav",
+        "peak_dbfs": -1.4486616152221334,
+        "rms_dbfs": -18.686611215516425,
+        "runtime_s": 48.72971796989441,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 941.077921805859,
+        "speech_band_energy_db": 60.331633158906286,
+        "true_peak_dbtp": -1.45,
+        "zero_crossing_rate": 0.013531562969845937
+      },
+      "score": {
+        "hiss_delta_db": 21.06,
+        "speech_delta_db": -14.5,
+        "lra_delta_lu": -0.7,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.081,
+        "score": 41.771,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c05_hybrid_classical_ml",
+      "exit_code": 0,
+      "stdout_tail": "[c05] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c05--hybrid_classical_ml/output.wav\n[c05] done in 133.2s, hiss=21.1dB speech=60.7dB\n",
+      "stderr_tail": "",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 7.0,
+        "extras": {},
+        "hiss_band_energy_db": 21.08426891651575,
+        "low_band_energy_db": 62.00568275160027,
+        "lufs": -17.57,
+        "measured_at": "2026-06-04T21:37:09.437708+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c05--hybrid_classical_ml/output.wav",
+        "peak_dbfs": -1.488646348474775,
+        "rms_dbfs": -18.43735311993998,
+        "runtime_s": 133.24821996688843,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1019.0609444968816,
+        "speech_band_energy_db": 60.670842225883284,
+        "true_peak_dbtp": -1.49,
+        "zero_crossing_rate": 0.029942813539681024
+      },
+      "score": {
+        "hiss_delta_db": 12.26,
+        "speech_delta_db": -14.84,
+        "lra_delta_lu": -2.2,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.222,
+        "score": 23.415,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c11_facebook_denoiser_loudnorm",
+      "exit_code": 0,
+      "stdout_tail": "[c11] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c11--facebook_denoiser_loudnorm/output.wav\n[c11] loading audio\u2026\n[c11] using device: cpu\n[c11] loading model\u2026\n[c11]   33.5M params loaded\n[c11] running inference on 600s of audio\u2026\n[c11]   inference done in 95.1s, writing denoised.wav\u2026\n[c11] done in 107.1s, hiss=22.1dB speech=60.8dB LUFS=-17.71\n",
+      "stderr_tail": "",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 7.0,
+        "extras": {},
+        "hiss_band_energy_db": 22.075675189187077,
+        "low_band_energy_db": 59.61022657349666,
+        "lufs": -17.71,
+        "measured_at": "2026-06-04T22:33:58.802951+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c11--facebook_denoiser_loudnorm/output.wav",
+        "peak_dbfs": -1.4950666302474787,
+        "rms_dbfs": -18.707262913345318,
+        "runtime_s": 107.05368280410767,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1068.6828284569604,
+        "speech_band_energy_db": 60.76135842742305,
+        "true_peak_dbtp": -1.49,
+        "zero_crossing_rate": 0.03933073053231703
+      },
+      "score": {
+        "hiss_delta_db": 11.27,
+        "speech_delta_db": -14.93,
+        "lra_delta_lu": -2.2,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.178,
+        "score": 21.432,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c02_rnnoise_dedicated",
+      "exit_code": 0,
+      "stdout_tail": "[c02] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c02--rnnoise_dedicated/output.wav\n[c02] done in 16.0s (dedicated CLI not on PATH; using ffmpeg arnndn), hiss=25.4dB\n",
+      "stderr_tail": "",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 8.6,
+        "extras": {},
+        "hiss_band_energy_db": 25.434390157562333,
+        "low_band_energy_db": 62.292222559233664,
+        "lufs": -17.57,
+        "measured_at": "2026-06-04T21:31:54.944657+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c02--rnnoise_dedicated/output.wav",
+        "peak_dbfs": -1.4918251595137693,
+        "rms_dbfs": -18.605814703861107,
+        "runtime_s": 15.964593172073364,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1310.0325152632215,
+        "speech_band_energy_db": 60.4151307370728,
+        "true_peak_dbtp": -1.48,
+        "zero_crossing_rate": 0.06492899531003456
+      },
+      "score": {
+        "hiss_delta_db": 7.91,
+        "speech_delta_db": -14.58,
+        "lra_delta_lu": -0.6,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.027,
+        "score": 15.514,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c10d_resemble_overlap_2",
+      "exit_code": 0,
+      "stdout_tail": "[c10d] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c10d--resemble_overlap_2/output.wav  preset=overlap_2  knobs={'chunk_seconds': 30.0, 'overlap_seconds': 2.0, 'preemphasis': 0.97}\n[c10d] done in 95.3s, hiss=27.3dB speech=60.8dB\n",
+      "stderr_tail": "0<00:26,  2.99s/it]\n 64%|\u2588\u2588\u2588\u2588\u2588\u2588\u258e   | 14/22 [00:43<00:23,  2.89s/it]\n 68%|\u2588\u2588\u2588\u2588\u2588\u2588\u258a   | 15/22 [00:46<00:19,  2.83s/it]\n 73%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e  | 16/22 [00:50<00:19,  3.22s/it]\n 77%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b  | 17/22 [00:57<00:22,  4.46s/it]\n 82%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f | 18/22 [01:04<00:20,  5.06s/it]\n 86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b | 19/22 [01:08<00:14,  4.78s/it]\n 91%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 20/22 [01:11<00:08,  4.40s/it]\n 95%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 21/22 [01:15<00:04,  4.12s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 22/22 [01:16<00:00,  3.36s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 22/22 [01:16<00:00,  3.49s/it]\n",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 7.5,
+        "extras": {
+          "knobs": {
+            "chunk_seconds": 30.0,
+            "overlap_seconds": 2.0,
+            "preemphasis": 0.97
+          },
+          "preset": "overlap_2"
+        },
+        "hiss_band_energy_db": 27.34671389902081,
+        "low_band_energy_db": 63.281837156332514,
+        "lufs": -17.17,
+        "measured_at": "2026-06-04T22:28:48.311019+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c10d--resemble_overlap_2/output.wav",
+        "peak_dbfs": -1.497122073888404,
+        "rms_dbfs": -18.03033803338085,
+        "runtime_s": 95.25355291366577,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1354.8664631327963,
+        "speech_band_energy_db": 60.7705442903505,
+        "true_peak_dbtp": -1.49,
+        "zero_crossing_rate": 0.09186559346755532
+      },
+      "score": {
+        "hiss_delta_db": 5.99,
+        "speech_delta_db": -14.94,
+        "lra_delta_lu": -1.7,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.159,
+        "score": 11.14,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c07_resemble_denoise",
+      "exit_code": 0,
+      "stdout_tail": "[c07] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c07--resemble_denoise/output.wav\n[c07] done in 90.8s, hiss=27.4dB speech=60.8dB\n",
+      "stderr_tail": "8<00:25,  2.86s/it]\n 62%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f   | 13/21 [00:41<00:22,  2.78s/it]\n 67%|\u2588\u2588\u2588\u2588\u2588\u2588\u258b   | 14/21 [00:43<00:19,  2.72s/it]\n 71%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 15/21 [00:46<00:16,  2.67s/it]\n 76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 16/21 [00:48<00:13,  2.64s/it]\n 81%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  | 17/21 [00:51<00:10,  2.65s/it]\n 86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 18/21 [00:54<00:07,  2.64s/it]\n 90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 19/21 [00:56<00:05,  2.65s/it]\n 95%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 20/21 [00:59<00:02,  2.62s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [01:01<00:00,  2.41s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [01:01<00:00,  2.91s/it]\n",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 7.6,
+        "extras": {},
+        "hiss_band_energy_db": 27.409902159143655,
+        "low_band_energy_db": 63.313126556764445,
+        "lufs": -17.18,
+        "measured_at": "2026-06-04T21:38:54.840177+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c07--resemble_denoise/output.wav",
+        "peak_dbfs": -1.4968354388580214,
+        "rms_dbfs": -18.041167261745933,
+        "runtime_s": 90.79945516586304,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1354.2680447419343,
+        "speech_band_energy_db": 60.76470895728156,
+        "true_peak_dbtp": -1.5,
+        "zero_crossing_rate": 0.08241927369511368
+      },
+      "score": {
+        "hiss_delta_db": 5.93,
+        "speech_delta_db": -14.93,
+        "lra_delta_lu": -1.6,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.151,
+        "score": 11.063,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c10a_resemble_baseline",
+      "exit_code": 0,
+      "stdout_tail": "[c10a] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c10a--resemble_baseline/output.wav  preset=baseline  knobs={'chunk_seconds': 30.0, 'overlap_seconds': 1.0, 'preemphasis': 0.97}\n[c10a] done in 158.5s, hiss=27.4dB speech=60.8dB\n",
+      "stderr_tail": "7<00:57,  6.35s/it]\n 62%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f   | 13/21 [01:24<00:51,  6.49s/it]\n 67%|\u2588\u2588\u2588\u2588\u2588\u2588\u258b   | 14/21 [01:30<00:45,  6.53s/it]\n 71%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 15/21 [01:37<00:38,  6.49s/it]\n 76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 16/21 [01:43<00:32,  6.45s/it]\n 81%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  | 17/21 [01:50<00:26,  6.51s/it]\n 86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 18/21 [01:56<00:19,  6.43s/it]\n 90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 19/21 [02:02<00:12,  6.32s/it]\n 95%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 20/21 [02:08<00:06,  6.16s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [02:12<00:00,  5.55s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [02:12<00:00,  6.31s/it]\n",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 7.6,
+        "extras": {
+          "knobs": {
+            "chunk_seconds": 30.0,
+            "overlap_seconds": 1.0,
+            "preemphasis": 0.97
+          },
+          "preset": "baseline"
+        },
+        "hiss_band_energy_db": 27.409902159143655,
+        "low_band_energy_db": 63.313126556764445,
+        "lufs": -17.18,
+        "measured_at": "2026-06-04T22:22:35.097946+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c10a--resemble_baseline/output.wav",
+        "peak_dbfs": -1.4968354388580214,
+        "rms_dbfs": -18.041167261745933,
+        "runtime_s": 158.48632287979126,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1354.2680447419343,
+        "speech_band_energy_db": 60.76470895728156,
+        "true_peak_dbtp": -1.5,
+        "zero_crossing_rate": 0.08241927369511368
+      },
+      "score": {
+        "hiss_delta_db": 5.93,
+        "speech_delta_db": -14.93,
+        "lra_delta_lu": -1.6,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.264,
+        "score": 11.063,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c10e_resemble_preemph_85",
+      "exit_code": 0,
+      "stdout_tail": "[c10e] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c10e--resemble_preemph_85/output.wav  preset=preemph_85  knobs={'chunk_seconds': 30.0, 'overlap_seconds': 1.0, 'preemphasis': 0.85}\n[c10e] done in 84.8s, hiss=27.4dB speech=60.8dB\n",
+      "stderr_tail": "0<00:26,  2.93s/it]\n 62%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f   | 13/21 [00:43<00:22,  2.85s/it]\n 67%|\u2588\u2588\u2588\u2588\u2588\u2588\u258b   | 14/21 [00:45<00:19,  2.78s/it]\n 71%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 15/21 [00:48<00:16,  2.73s/it]\n 76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 16/21 [00:51<00:13,  2.70s/it]\n 81%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  | 17/21 [00:53<00:10,  2.69s/it]\n 86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 18/21 [00:56<00:08,  2.67s/it]\n 90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 19/21 [00:58<00:05,  2.66s/it]\n 95%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 20/21 [01:01<00:02,  2.64s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [01:03<00:00,  2.48s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [01:03<00:00,  3.03s/it]\n",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 7.6,
+        "extras": {
+          "knobs": {
+            "chunk_seconds": 30.0,
+            "overlap_seconds": 1.0,
+            "preemphasis": 0.85
+          },
+          "preset": "preemph_85"
+        },
+        "hiss_band_energy_db": 27.410058918200335,
+        "low_band_energy_db": 63.31288253668404,
+        "lufs": -17.18,
+        "measured_at": "2026-06-04T22:30:27.271489+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c10e--resemble_preemph_85/output.wav",
+        "peak_dbfs": -1.4970716352788136,
+        "rms_dbfs": -18.04146579869415,
+        "runtime_s": 84.84033823013306,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1354.2802963296788,
+        "speech_band_energy_db": 60.764523117728245,
+        "true_peak_dbtp": -1.5,
+        "zero_crossing_rate": 0.08246712091899726
+      },
+      "score": {
+        "hiss_delta_db": 5.93,
+        "speech_delta_db": -14.93,
+        "lra_delta_lu": -1.6,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.141,
+        "score": 11.063,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c10f_resemble_preemph_70",
+      "exit_code": 0,
+      "stdout_tail": "[c10f] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c10f--resemble_preemph_70/output.wav  preset=preemph_70  knobs={'chunk_seconds': 30.0, 'overlap_seconds': 1.0, 'preemphasis': 0.7}\n[c10f] done in 76.2s, hiss=27.4dB speech=60.8dB\n",
+      "stderr_tail": "2<00:23,  2.63s/it]\n 62%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f   | 13/21 [00:34<00:21,  2.63s/it]\n 67%|\u2588\u2588\u2588\u2588\u2588\u2588\u258b   | 14/21 [00:37<00:18,  2.63s/it]\n 71%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 15/21 [00:39<00:15,  2.62s/it]\n 76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 16/21 [00:42<00:13,  2.63s/it]\n 81%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  | 17/21 [00:45<00:10,  2.67s/it]\n 86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 18/21 [00:48<00:08,  2.70s/it]\n 90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 19/21 [00:50<00:05,  2.71s/it]\n 95%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 20/21 [00:53<00:02,  2.72s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [00:55<00:00,  2.52s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [00:55<00:00,  2.65s/it]\n",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 7.6,
+        "extras": {
+          "knobs": {
+            "chunk_seconds": 30.0,
+            "overlap_seconds": 1.0,
+            "preemphasis": 0.7
+          },
+          "preset": "preemph_70"
+        },
+        "hiss_band_energy_db": 27.409902159143655,
+        "low_band_energy_db": 63.313126556764445,
+        "lufs": -17.18,
+        "measured_at": "2026-06-04T22:31:57.164137+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c10f--resemble_preemph_70/output.wav",
+        "peak_dbfs": -1.4968354388580214,
+        "rms_dbfs": -18.041167261745933,
+        "runtime_s": 76.19878697395325,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1354.2680447419343,
+        "speech_band_energy_db": 60.76470895728156,
+        "true_peak_dbtp": -1.5,
+        "zero_crossing_rate": 0.08241927369511368
+      },
+      "score": {
+        "hiss_delta_db": 5.93,
+        "speech_delta_db": -14.93,
+        "lra_delta_lu": -1.6,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.127,
+        "score": 11.063,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c10c_resemble_chunk_15",
+      "exit_code": 0,
+      "stdout_tail": "[c10c] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c10c--resemble_chunk_15/output.wav  preset=chunk_15  knobs={'chunk_seconds': 15.0, 'overlap_seconds': 1.0, 'preemphasis': 0.97}\n[c10c] done in 102.2s, hiss=27.5dB speech=60.8dB\n",
+      "stderr_tail": "6<00:15,  1.75s/it]\n 81%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f | 35/43 [01:08<00:13,  1.72s/it]\n 84%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e | 36/43 [01:09<00:11,  1.71s/it]\n 86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 37/43 [01:11<00:10,  1.71s/it]\n 88%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a | 38/43 [01:13<00:08,  1.71s/it]\n 91%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 39/43 [01:14<00:06,  1.72s/it]\n 93%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e| 40/43 [01:16<00:05,  1.74s/it]\n 95%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 41/43 [01:18<00:03,  1.75s/it]\n 98%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a| 42/43 [01:20<00:01,  1.74s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 43/43 [01:21<00:00,  1.71s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 43/43 [01:21<00:00,  1.90s/it]\n",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 7.3,
+        "extras": {
+          "knobs": {
+            "chunk_seconds": 15.0,
+            "overlap_seconds": 1.0,
+            "preemphasis": 0.97
+          },
+          "preset": "chunk_15"
+        },
+        "hiss_band_energy_db": 27.5135756608167,
+        "low_band_energy_db": 63.206306844307036,
+        "lufs": -17.18,
+        "measured_at": "2026-06-04T22:26:58.231058+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c10c--resemble_chunk_15/output.wav",
+        "peak_dbfs": -1.4970236573610138,
+        "rms_dbfs": -18.045504803326565,
+        "runtime_s": 102.19968295097351,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1354.3938109563896,
+        "speech_band_energy_db": 60.78175353588331,
+        "true_peak_dbtp": -1.49,
+        "zero_crossing_rate": 0.08428941264893794
+      },
+      "score": {
+        "hiss_delta_db": 5.83,
+        "speech_delta_db": -14.95,
+        "lra_delta_lu": -1.9,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.17,
+        "score": 10.706,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c10b_resemble_chunk_60",
+      "exit_code": 0,
+      "stdout_tail": "[c10b] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c10b--resemble_chunk_60/output.wav  preset=chunk_60  knobs={'chunk_seconds': 60.0, 'overlap_seconds': 1.0, 'preemphasis': 0.97}\n[c10b] done in 132.1s, hiss=28.2dB speech=60.8dB\n",
+      "stderr_tail": "1 [00:23<01:45, 11.76s/it]\n 27%|\u2588\u2588\u258b       | 3/11 [00:35<01:33, 11.73s/it]\n 36%|\u2588\u2588\u2588\u258b      | 4/11 [00:47<01:23, 11.95s/it]\n 45%|\u2588\u2588\u2588\u2588\u258c     | 5/11 [00:59<01:10, 11.73s/it]\n 55%|\u2588\u2588\u2588\u2588\u2588\u258d    | 6/11 [01:10<00:57, 11.48s/it]\n 64%|\u2588\u2588\u2588\u2588\u2588\u2588\u258e   | 7/11 [01:20<00:44, 11.17s/it]\n 73%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e  | 8/11 [01:30<00:32, 10.81s/it]\n 82%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f | 9/11 [01:39<00:20, 10.35s/it]\n 91%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 10/11 [01:48<00:09,  9.92s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 11/11 [01:50<00:00,  7.41s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 11/11 [01:50<00:00, 10.05s/it]\n",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 7.4,
+        "extras": {
+          "knobs": {
+            "chunk_seconds": 60.0,
+            "overlap_seconds": 1.0,
+            "preemphasis": 0.97
+          },
+          "preset": "chunk_60"
+        },
+        "hiss_band_energy_db": 28.202723755828572,
+        "low_band_energy_db": 63.31425305828986,
+        "lufs": -17.17,
+        "measured_at": "2026-06-04T22:25:02.636942+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c10b--resemble_chunk_60/output.wav",
+        "peak_dbfs": -1.4940397056881338,
+        "rms_dbfs": -18.030158520307705,
+        "runtime_s": 132.06553101539612,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 1383.7813884116474,
+        "speech_band_energy_db": 60.75551698961134,
+        "true_peak_dbtp": -1.49,
+        "zero_crossing_rate": 0.08463344043866113
+      },
+      "score": {
+        "hiss_delta_db": 5.14,
+        "speech_delta_db": -14.92,
+        "lra_delta_lu": -1.8,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.22,
+        "score": 9.378,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c08_resemble_enhance",
+      "exit_code": 0,
+      "stdout_tail": "[c08] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c08--resemble_enhance/output.wav\n[c08] done in 1775.5s, hiss=34.4dB speech=42.9dB\n",
+      "stderr_tail": "11:45, 78.35s/it]\n 62%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f   | 13/21 [16:40<09:35, 71.95s/it]\n 67%|\u2588\u2588\u2588\u2588\u2588\u2588\u258b   | 14/21 [17:44<08:06, 69.57s/it]\n 71%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 15/21 [18:58<07:05, 70.87s/it]\n 76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 16/21 [20:12<05:59, 71.81s/it]\n 81%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  | 17/21 [21:10<04:30, 67.67s/it]\n 86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 18/21 [23:51<04:47, 95.81s/it]\n 90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 19/21 [25:46<03:22, 101.46s/it]\n 95%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 20/21 [27:07<01:35, 95.31s/it] \n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [28:56<00:00, 99.54s/it]\n100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [28:56<00:00, 82.71s/it]\n",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 6.2,
+        "extras": {},
+        "hiss_band_energy_db": 34.39874096615489,
+        "low_band_energy_db": 64.5483709694672,
+        "lufs": -20.73,
+        "measured_at": "2026-06-04T22:09:03.921427+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c08--resemble_enhance/output.wav",
+        "peak_dbfs": -1.2849336549010937,
+        "rms_dbfs": -10.109664549863105,
+        "runtime_s": 1775.5395472049713,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 3934.3163743127075,
+        "speech_band_energy_db": 42.92211626146073,
+        "true_peak_dbtp": -1.28,
+        "zero_crossing_rate": 0.05018239757577769
+      },
+      "score": {
+        "hiss_delta_db": -1.06,
+        "speech_delta_db": 2.91,
+        "lra_delta_lu": -3.0,
+        "lufs_drift_lu": 1.73,
+        "rtf": 2.959,
+        "score": -8.003,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c09_audio_maister",
+      "exit_code": 0,
+      "stdout_tail": "[c09] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c09--audio_maister/output.wav\n[c09] step 1/3: decode \u2192 48k mono PCM\u2026\n[c09]   done in 0.3s\n[c09] step 2/3: loading model from /Users/atma/.cache/huggingface/hub/models--peterwilli--audio-maister/snapshots/main/audiomaister_v1.5.ckpt\u2026\n[c09]   loaded in 3.6s, restoring\u2026\n[c09]   restored in 578.5s\n[c09] step 3/3: loudnorm \u2192 -16 LUFS\u2026\n[c09]   loudnorm done\n[c09] done in 596.3s, hiss=37.3dB speech=58.5dB\n",
+      "stderr_tail": "xing audio segments...:   0%|          | 0/5 [00:00<?, ?it/s]\nFixing audio segments...:  20%|\u2588\u2588        | 1/5 [02:35<10:20, 155.11s/it]\nFixing audio segments...:  40%|\u2588\u2588\u2588\u2588      | 2/5 [04:41<06:53, 137.99s/it]\nFixing audio segments...:  60%|\u2588\u2588\u2588\u2588\u2588\u2588    | 3/5 [06:18<03:58, 119.28s/it]\nFixing audio segments...:  80%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  | 4/5 [07:51<01:48, 108.91s/it]\nFixing audio segments...: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 5/5 [08:58<00:00, 93.90s/it] \nFixing audio segments...: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 5/5 [08:58<00:00, 107.69s/it]\n",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 8.7,
+        "extras": {},
+        "hiss_band_energy_db": 37.2928011467521,
+        "low_band_energy_db": 63.351848028955196,
+        "lufs": -18.81,
+        "measured_at": "2026-06-04T22:19:38.953012+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c09--audio_maister/output.wav",
+        "peak_dbfs": -1.4918903213273869,
+        "rms_dbfs": -20.16946692896992,
+        "runtime_s": 596.3255529403687,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 2747.916274572733,
+        "speech_band_energy_db": 58.543226629080195,
+        "true_peak_dbtp": -1.49,
+        "zero_crossing_rate": 0.12084656669606135
+      },
+      "score": {
+        "hiss_delta_db": -3.95,
+        "speech_delta_db": -12.71,
+        "lra_delta_lu": -0.5,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.994,
+        "score": -8.152,
+        "skipped": false
+      }
+    },
+    {
+      "candidate": "c04_sox_classical",
+      "exit_code": 0,
+      "stdout_tail": "[c04] 760706AD_WASHINGTON_DC_10min.wav \u2192 stages/760706AD_WASHINGTON_DC/c04--sox_classical/output.wav\n[c04] done in 12.6s, hiss=49.9dB speech=60.3dB\n",
+      "stderr_tail": "",
+      "report": {
+        "bit_depth": 24,
+        "channels": 1,
+        "duration_s": 600.0,
+        "dynamic_range_lu": 4.1,
+        "extras": {},
+        "hiss_band_energy_db": 49.882724208233896,
+        "low_band_energy_db": 66.57880770455047,
+        "lufs": -16.78,
+        "measured_at": "2026-06-04T21:34:37.305671+00:00",
+        "path": "/Users/atma/dev/OpenCode/projects/audio_restore/stages/760706AD_WASHINGTON_DC/c04--sox_classical/output.wav",
+        "peak_dbfs": -1.3388493339083727,
+        "rms_dbfs": -17.11478875905318,
+        "runtime_s": 12.610891103744507,
+        "sample_rate": 48000,
+        "spectral_centroid_hz": 4257.87959536149,
+        "speech_band_energy_db": 60.314663384606604,
+        "true_peak_dbtp": -1.08,
+        "zero_crossing_rate": 0.12865649752279507
+      },
+      "score": {
+        "hiss_delta_db": -16.54,
+        "speech_delta_db": -14.48,
+        "lra_delta_lu": -5.1,
+        "lufs_drift_lu": 0.0,
+        "rtf": 0.021,
+        "score": -35.632,
+        "skipped": false
+      }
+    }
+  ]
+}
