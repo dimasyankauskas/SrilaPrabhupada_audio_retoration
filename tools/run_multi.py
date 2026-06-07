@@ -39,15 +39,19 @@ import lib_audio as L  # noqa: E402
 
 # Sources to compare. Edit this list to add/remove. Order is preserved in
 # the HTML output. Each path is relative to REPO_ROOT unless absolute.
-SOURCES: list[Path] = [
-    Path("samples/source/760706AD-WASHINGTON DC.wav"),     # 1976-07-06 Washington DC, 10m already
-    Path("samples/source/670322SB-SAN_FRANCISCO.mp3"),     # 1967-03-22 San Francisco, 14m52s
-    Path("samples/source/720321SB.BOM.mp3"),               # 1972-03-21 Bombay, 41m36s
+# Each entry: (path, clip_start_seconds, clip_duration_seconds).
+# The clip is taken from [start, start+duration]. Set duration to None
+# to use the source's full length (Paris 1972 is only 4:53, no room for 5-15).
+SOURCES: list[tuple[Path, int, int | None]] = [
+    (Path("samples/source/760706AD-WASHINGTON DC.wav"),  0, 600),  # 1976 DC, 0-10min (whole file)
+    (Path("samples/source/670322SB-SAN_FRANCISCO.mp3"),  0, 600),  # 1967 SF, 0-10min
+    (Path("samples/source/720321SB.BOM.mp3"),          300, 600),  # 1972 BOM, 5-15min slice
+    (Path("samples/source/680323MW-SAN_FRANCISCO.mp3"), 300, 600),  # 1968 SF morning walk, 5-15min slice
+    (Path("samples/source/720720IV.PAR.mp3"),            0, None),  # 1972 Paris IV, full 4:53
 ]
 
 CLIP_DIR = Path("/tmp/audio_restore_clips")
 REPORT_DIR = REPO_ROOT / "reports" / "multi"
-CLIP_SECONDS = 600  # 10 minutes
 
 
 # ---------- helpers ----------
@@ -57,24 +61,27 @@ def safe_name(p: Path) -> str:
     return re.sub(r"[^A-Za-z0-9]+", "_", p.stem).strip("_")
 
 
-def make_clip(src: Path, dest: Path) -> None:
-    """Decode/clip the first CLIP_SECONDS of src → dest at 48k/24/mono PCM.
+def make_clip(src: Path, dest: Path, start_s: int, duration_s: int | None) -> None:
+    """Decode/clip [start_s, start_s + duration_s] of src → dest at 48k/24/mono PCM.
 
     Re-runs are skipped if the dest already exists with non-zero size.
+    If duration_s is None, the source is decoded to its full length.
     """
     if dest.exists() and dest.stat().st_size > 1024:
         print(f"[clip] cached: {dest.name} ({dest.stat().st_size // 1024} KB)")
         return
     dest.parent.mkdir(parents=True, exist_ok=True)
-    print(f"[clip] ffmpeg → {dest.name}")
-    # -ss before -i for fast seek, -t for duration, resample + downmix + bitdepth.
+    duration_label = f"{duration_s}s" if duration_s else "full length"
+    print(f"[clip] ffmpeg → {dest.name}  (start={start_s}s, dur={duration_label})")
     cmd = [
         "ffmpeg", "-y", "-hide_banner", "-nostats", "-loglevel", "error",
-        "-ss", "0", "-t", str(CLIP_SECONDS),
+        "-ss", str(start_s),
         "-i", str(src),
         "-ac", "1", "-ar", "48000", "-c:a", "pcm_s24le",
-        str(dest),
     ]
+    if duration_s is not None:
+        cmd += ["-t", str(duration_s)]
+    cmd += [str(dest)]
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError(f"ffmpeg clip failed for {src}: {r.stderr}")
@@ -1061,17 +1068,21 @@ def main() -> int:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
     # Verify sources exist before doing any work.
-    for s in SOURCES:
-        if not s.exists():
-            print(f"error: source not found: {s}", file=sys.stderr)
+    for src, _, _ in SOURCES:
+        if not src.exists():
+            print(f"error: source not found: {src}", file=sys.stderr)
             return 1
 
     samples = []
-    for src in SOURCES:
+    for src, start_s, dur_s in SOURCES:
         sample = safe_name(src)
-        clip = CLIP_DIR / f"{sample}_10min.wav"
+        # Filename reflects duration: "10min" if 600s, otherwise "<seconds>s".
+        clip_name = f"{sample}_10min.wav" if dur_s == 600 else (
+            f"{sample}_full.wav" if dur_s is None else f"{sample}_{dur_s}s.wav"
+        )
+        clip = CLIP_DIR / clip_name
         print(f"\n=== {src.name} → {clip.name} ===")
-        make_clip(src, clip)
+        make_clip(src, clip, start_s, dur_s)
         result = run_harness(clip, sample)
         result["src"] = src.name
         result["sample"] = sample
