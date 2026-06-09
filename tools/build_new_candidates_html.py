@@ -190,13 +190,13 @@ a:hover { color: var(--accent-hover); }
   background: color-mix(in oklab, var(--bg) 72%, transparent);
   border-bottom: 1px solid var(--rule);
 }
-.topbar .row { display: flex; align-items: center; gap: 24px; padding: 14px 0; }
-.brand { display: flex; align-items: center; gap: 12px; }
-.brand-mark { width: 36px; height: 36px; border-radius: 8px; display: block; }
-.brand-text { display: flex; flex-direction: column; line-height: 1.1; }
-.brand-line-1 { font-family: var(--serif); font-size: 15px; font-weight: 500; color: var(--ink); letter-spacing: 0.005em; }
+.topbar .row { display: flex; align-items: center; gap: clamp(16px, 2.2vw, 28px); padding-block: 14px; }
+.brand { display: flex; align-items: center; gap: 14px; flex: 0 0 auto; min-width: 236px; }
+.brand-mark { width: 44px; height: 44px; border-radius: 10px; display: block; flex: 0 0 44px; box-shadow: 0 0 0 1px color-mix(in oklab, var(--ink) 18%, transparent); }
+.brand-text { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; }
+.brand-line-1 { font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); letter-spacing: 0.005em; white-space: nowrap; }
 .brand-line-2 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); }
-.nav { display: flex; gap: 22px; margin-left: auto; align-items: center; }
+.nav { display: flex; gap: clamp(14px, 2vw, 22px); margin-left: auto; align-items: center; }
 .nav a { font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
 .nav a:hover { color: var(--ink); }
 .theme-toggle { background: transparent; border: 1px solid var(--rule); width: 36px; height: 36px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ink-2); padding: 0; }
