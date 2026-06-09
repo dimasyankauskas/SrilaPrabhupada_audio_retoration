@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-build_new_candidates_html — Focused A/B page for the 4 candidates that
+build_new_candidates_html — Project index for the focused A/B review page.
+
+Focused A/B page for the 4 candidates that
 matter for the "loudness + naturalness" question:
 
   c03 — Demucs (the original "wins on metrics, sounds thin" candidate)
@@ -8,9 +10,9 @@ matter for the "loudness + naturalness" question:
   c12 — DeepFilterNet3 (the speed winner, conservative on hiss)
   c13 — VoiceFixer (the naturalness bet, but vocoder adds HF hiss)
 
-Side-by-side audio + the metrics that drove the score. The page is at
-reports/multi/new_candidates.html so it sits next to the canonical
-comparison.html without overwriting it.
+Side-by-side audio + the metrics that drove the score. The page is written
+to index.html as the project entry point, including the full multi-sample
+matrix so there is one review surface.
 
 Player behavior (the main feature of this iteration):
   • Master clock — all audios are seeked to the same currentTime when
@@ -29,6 +31,7 @@ Player behavior (the main feature of this iteration):
 from __future__ import annotations
 
 import json
+import re
 import sys
 from html import escape
 from pathlib import Path
@@ -39,7 +42,7 @@ import lib_audio as L  # noqa: E402
 
 REPORT_DIR = REPO_ROOT / "reports" / "multi"
 REPORT_DIR.mkdir(parents=True, exist_ok=True)
-OUT = REPORT_DIR / "new_candidates.html"
+OUT = REPO_ROOT / "index.html"
 
 FOCUS_CANDS = ["c12", "c13", "c14", "c15", "c16", "c17"]
 
@@ -297,6 +300,19 @@ table.metrics th { background: transparent; color: var(--ink-3); font-family: va
 table.metrics tr.src-row td { background: color-mix(in oklab, var(--accent) 4%, transparent); }
 table.metrics tr:last-child td { border-bottom: 0; }
 table.metrics td.num { font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 0.85rem; color: var(--ink-2); }
+table.metrics {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+table.metrics thead,
+table.metrics tbody,
+table.metrics tr {
+  width: max-content;
+  min-width: 100%;
+}
 
 .score-good { color: var(--accent); font-weight: 500; }
 .score-bad { color: var(--danger); font-weight: 500; }
@@ -357,6 +373,14 @@ table.compare-sum .num { font-variant-numeric: tabular-nums; font-family: var(--
 .sample-section .head h3 { font-family: var(--serif); font-size: 1.55rem; font-weight: 400; line-height: 1.15; color: var(--ink); margin: 0; }
 .sample-section .head h3 em { color: var(--accent); font-style: italic; }
 .sample-section .head .stamp { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.sample-section,
+.sample-section .head,
+.sample-section .head h3 {
+  min-width: 0;
+}
+.sample-section .head h3 {
+  overflow-wrap: anywhere;
+}
 
 /* active card glow */
 .audio-card.is-active { box-shadow: 0 0 0 1px var(--accent), 0 24px 60px rgba(0, 0, 0, 0.22); }
@@ -384,6 +408,18 @@ table.compare-sum .num { font-variant-numeric: tabular-nums; font-family: var(--
   color: var(--active);
 }
 
+.matrix-frame {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 78vh;
+  overflow: hidden;
+  contain: inline-size;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--bg-2);
+}
+
 /* responsive: shrink the audio cards to single column on narrow screens */
 @media (max-width: 720px) {
   html { font-size: 16px; }
@@ -401,7 +437,7 @@ table.compare-sum .num { font-variant-numeric: tabular-nums; font-family: var(--
 
 
 BRAND_MARK_SVG = """
-<img class="brand-mark" src="../../assets/images/prabhupada-icon.png" alt="Srila Prabhupada Audio Restoration" width="36" height="36"/>
+<img class="brand-mark" src="assets/images/prabhupada-icon.png" alt="Srila Prabhupada Audio Restoration" width="36" height="36"/>
 """
 
 
@@ -470,7 +506,7 @@ def card_html(c: dict | None, src_clip: str, *, is_source: bool = False, baselin
 """
 
     cand = c["cand"]
-    cand_rel = c.get("cand_url", f"../../assets/audio/candidates/{c['stage']}.mp3")
+    cand_rel = c.get("cand_url", f"assets/audio/candidates/{c['stage']}.mp3")
     sc = c["score"]
     is_winner = c.get("is_winner", False)
     winner_class = " is-winner" if is_winner else ""
@@ -619,9 +655,9 @@ def build_multi_sample_section() -> str:
         c16 = _load_report_for(sample, "c16")
         if base is None:
             continue
-        src_clip = f"../../assets/audio/{sample}_3min.mp3"
-        c15_clip = f"../../assets/audio/{sample}_c15_3min.mp3"
-        c16_clip = f"../../assets/audio/{sample}_c16_3min.mp3"
+        src_clip = f"assets/audio/{sample}_3min.mp3"
+        c15_clip = f"assets/audio/{sample}_c15_3min.mp3"
+        c16_clip = f"assets/audio/{sample}_c16_3min.mp3"
 
         # Compute scores to know the winner
         c15_sc = _score(base, c15)[0] if c15 else None
@@ -718,6 +754,321 @@ def build_multi_sample_section() -> str:
     return "\n".join(parts)
 
 
+MATRIX_CSS = r"""
+:host {
+  --bg: #0e0d0b; --bg-2: #161410; --bg-3: #1e1b16;
+  --ink: #fcf9f2; --ink-2: #d1ccbe; --ink-3: #9b9587;
+  --rule: #2a2722; --accent: #f07f63; --accent-2: #d4a155;
+  --success: #6fa86a; --warning: #c4913a; --danger: #b85450;
+  --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "IBM Plex Mono", "SF Mono", "JetBrains Mono", Menlo, monospace;
+  display: block;
+  color: var(--ink);
+  font: 400 16px/1.5 var(--sans);
+  overflow: hidden;
+}
+* { box-sizing: border-box; }
+h1 {
+  margin: 0 0 0.35rem;
+  color: var(--ink);
+  font: 400 clamp(1.7rem, 3vw, 2.6rem)/1.05 var(--serif);
+  letter-spacing: 0;
+}
+h2 {
+  margin: 2rem 0 0.45rem;
+  color: var(--ink);
+  font: 500 clamp(1.25rem, 2vw, 1.65rem)/1.12 var(--serif);
+}
+h3 {
+  margin: 1.4rem 0 0.65rem;
+  color: var(--accent-2);
+  font: 500 12px/1.3 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+p, .meta, .muted { color: var(--ink-3); }
+.meta { margin: 0 0 1rem; font-size: 0.92rem; }
+code {
+  color: var(--ink);
+  background: var(--bg-3);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+a { color: var(--accent); text-decoration: none; }
+nav.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 0;
+  margin: 0 0 1.4rem;
+  background: color-mix(in oklab, var(--bg) 90%, transparent);
+  border-bottom: 1px solid var(--rule);
+}
+nav.sticky a {
+  color: var(--ink-2);
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 6px 11px;
+  font: 500 11px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+nav.sticky a:hover { color: var(--accent); border-color: var(--accent); }
+section.card, section.tldr .block, .summary, details.per-sample-card > summary {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+section.card {
+  padding: clamp(16px, 2vw, 24px);
+  margin: 1.25rem 0;
+  overflow: hidden;
+}
+section.tldr {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 1.25rem 0 1.5rem;
+}
+section.tldr .block {
+  padding: 16px 18px;
+  border-left: 2px solid var(--accent);
+}
+section.tldr h3 { margin-top: 0; color: var(--ink-3); }
+section.tldr .big-num {
+  color: var(--accent);
+  font: 500 1.55rem/1 var(--serif);
+  font-variant-numeric: tabular-nums;
+}
+.tldr-list, .chips { margin: 0; padding: 0; }
+.tldr-list { list-style: none; }
+.tldr-list li { padding: 6px 0; border-bottom: 1px solid var(--rule); }
+.tldr-list li:last-child { border-bottom: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.tldr-chip {
+  color: var(--ink-2);
+  background: var(--bg-3);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 4px 7px;
+  font: 500 12px/1.3 var(--mono);
+}
+.table-scroll-note {
+  color: var(--ink-3);
+  font: 500 11px/1.3 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 0.75rem 0 1.2rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--bg-2);
+}
+thead, tbody, tr { width: max-content; min-width: 100%; }
+th, td {
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 12px;
+  color: var(--ink-2);
+  font-size: 0.9rem;
+  vertical-align: top;
+}
+th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: var(--ink-3);
+  background: var(--bg-3);
+  font: 500 11px/1.25 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+td.num, td.cand, .audio-label, td.rating-aggregate {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+td.cand, .audio-label {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+td.num { text-align: right; white-space: nowrap; }
+td.score, .score { color: var(--accent); font-weight: 600; }
+.score-bad { color: var(--danger); }
+.score-good { color: var(--accent); }
+tr.src-row, table.audio-grid tr.src-row { background: color-mix(in oklab, var(--accent-2) 12%, var(--bg-2)); }
+tr.skipped { opacity: 0.55; }
+table.unified tr { min-width: 1080px; }
+table.audio-grid {
+  table-layout: fixed;
+}
+table.audio-grid tr { min-width: 1180px; }
+table.audio-grid th,
+table.audio-grid td {
+  width: 180px;
+  max-width: 180px;
+  text-align: center;
+}
+table.audio-grid th:first-child,
+table.audio-grid td:first-child {
+  width: 190px;
+  max-width: 190px;
+  text-align: left;
+}
+.audio-label {
+  display: block;
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+button.play-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 7px 12px;
+  color: var(--bg);
+  background: var(--accent);
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font: 600 13px/1 var(--sans);
+}
+button.play-btn:hover { background: #ff947b; }
+audio {
+  display: block;
+  width: 100%;
+  height: 34px;
+  margin-top: 8px;
+}
+audio.hidden { display: none; }
+.winner {
+  margin: 0.75rem 0 1.2rem;
+  padding: 12px 16px;
+  color: var(--ink-2);
+  background: color-mix(in oklab, var(--accent) 12%, var(--bg-2));
+  border-left: 2px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.summary {
+  margin: 2rem 0;
+  padding: 16px 18px;
+  color: var(--ink-2);
+  border-left: 2px solid var(--accent-2);
+}
+.rating { display: inline-flex; gap: 1px; user-select: none; }
+.rating button {
+  color: var(--ink-3);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 2px 3px;
+}
+.rating button.filled,
+.rating.hover-1 button:nth-child(-n+1),
+.rating.hover-2 button:nth-child(-n+2),
+.rating.hover-3 button:nth-child(-n+3),
+.rating.hover-4 button:nth-child(-n+4),
+.rating.hover-5 button:nth-child(-n+5) { color: var(--accent-2); }
+details.per-sample-card {
+  margin: 0.9rem 0;
+}
+details.per-sample-card > summary {
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 16px;
+  list-style: none;
+}
+details.per-sample-card > summary::-webkit-details-marker { display: none; }
+details.per-sample-card > summary::before {
+  content: "+";
+  color: var(--accent);
+  font-family: var(--mono);
+}
+details.per-sample-card[open] > summary::before { content: "-"; }
+details.per-sample-card > summary .ps-name { color: var(--ink); font-weight: 600; }
+footer {
+  color: var(--ink-3);
+  border-top: 1px solid var(--rule);
+  margin-top: 2rem;
+  padding-top: 1rem;
+  font-size: 0.88rem;
+}
+@media (max-width: 900px) {
+  section.tldr { grid-template-columns: 1fr; }
+  :host { font-size: 15px; }
+}
+"""
+
+
+def build_full_matrix_section() -> str:
+    """Embed the full generated matrix inside index.html.
+
+    The old standalone reports/multi/comparison.html page is useful content,
+    but a second review URL is redundant. Keep the matrix visually isolated in
+    a shadow root so its plain report CSS cannot fight the polished index CSS.
+    """
+    p = REPORT_DIR / "comparison.html"
+    if not p.exists():
+        return """
+<section class="band reveal" id="matrix">
+  <div class="band-head">
+    <div><span class="kicker accent">03 — full matrix</span></div>
+    <div>
+      <h2>Full comparison <em>matrix</em></h2>
+      <p class="deck">The matrix has not been generated yet. Run <code>make multi</code>, then rebuild this index.</p>
+    </div>
+  </div>
+</section>
+"""
+    matrix_html = p.read_text().replace("../../assets/", "assets/")
+    body_match = re.search(r"<body>(.*?)</body>", matrix_html, flags=re.S)
+    matrix_body = body_match.group(1) if body_match else matrix_html
+    return f"""
+<section class="band reveal" id="matrix">
+  <div class="band-head">
+    <div><span class="kicker accent">03 — full matrix</span></div>
+    <div>
+      <h2>Every candidate, <em>every sample</em></h2>
+      <p class="deck">The complete c01–c17 scoring table, per-sample rankings, rating controls,
+      and all 196 public audio cells are embedded here so the project index contains the whole review.</p>
+    </div>
+  </div>
+  <div id="matrix-host" class="matrix-frame"></div>
+  <template id="matrix-template">
+    <style>{MATRIX_CSS}</style>
+    {matrix_body}
+  </template>
+  <script>
+  (function() {{
+    const host = document.getElementById('matrix-host');
+    const tpl = document.getElementById('matrix-template');
+    if (!host || !tpl || host.shadowRoot) return;
+    host.attachShadow({{ mode: 'open' }}).appendChild(tpl.content.cloneNode(true));
+  }})();
+  </script>
+</section>
+"""
+
+
 def main() -> int:
     base = _load_baseline()
     if base is None:
@@ -745,7 +1096,7 @@ def main() -> int:
         for c in cands:
             c["is_winner"] = (c is top and top["score"] > 0)
 
-    src_clip = f"../../assets/audio/{SAMPLE}_10min.mp3"
+    src_clip = f"assets/audio/{SAMPLE}_10min.mp3"
 
     # Audio cards: source first, then candidates.
     audio_cards = [card_html(None, src_clip, is_source=True, baseline=base)]
@@ -790,6 +1141,7 @@ def main() -> int:
       <a href="#metrics">01 Metrics</a>
       <a href="#verdict">01 Verdict</a>
       <a href="#multi">02 Cross-sample</a>
+      <a href="#matrix">03 Matrix</a>
     </nav>
     <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
       <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -941,16 +1293,7 @@ def main() -> int:
 
 {build_multi_sample_section()}
 
-<footer class="band">
-  <div class="band-head">
-    <div></div>
-    <div>
-      <p class="meta" style="margin: 0;">
-        Back to the <a href="comparison.html">canonical comparison</a> for the full c01–c13 table.
-      </p>
-    </div>
-  </div>
-</footer>
+{build_full_matrix_section()}
 
 </div><!-- /.wrap -->
 
@@ -1083,7 +1426,7 @@ def main() -> int:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>New candidates A/B · audio_restore</title>
+  <title>Srila Prabhupada Audio Restoration · audio_restore</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">

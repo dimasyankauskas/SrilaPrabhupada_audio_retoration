@@ -28,17 +28,11 @@ history.txt
 
 # Project artifacts
 stages/
-# Public comparison page is published to GitHub Pages; ship it.
-reports/multi/new_candidates.html
-# Cross-sample A/B page is also published (focus candidates have working
-# audio via pre-encoded assets/audio/<sample>_<cand>_3min.mp3s; non-focus
-# cells show broken audio on the public URL — they only work locally).
-reports/multi/comparison.html
+# Project index is published to GitHub Pages; ship it.
+# The full matrix is embedded into index.html, so standalone report HTML is local.
 # All other reports are local.
 reports/*
 !reports/multi/
-!reports/multi/new_candidates.html
-!reports/multi/comparison.html
 samples/source/*
 !samples/source/.gitkeep
 
